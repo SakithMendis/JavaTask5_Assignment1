@@ -1,12 +1,15 @@
 package Task2;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Transaction {
     private String transactionId;
     private String transactionType;
     private double transactionAmount;
-    private String transactionDate;
+    private LocalDate transactionDate;
 
-    public Transaction(String transactionId, String transactionType, double transactionAmount, String transactionDate) {
+    public Transaction(String transactionId, String transactionType, double transactionAmount, LocalDate transactionDate) {
         this.transactionId = transactionId;
         this.transactionType = transactionType;
         this.transactionAmount = transactionAmount;
@@ -30,11 +33,13 @@ public class Transaction {
     public void setTransactionAmount(double transactionAmount) {
         this.transactionAmount = transactionAmount;
     }
-    public String getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
-    public void setTransactionDate(String transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
+
+
 }
 

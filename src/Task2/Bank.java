@@ -1,38 +1,52 @@
 package Task2;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Bank {
 
     private ArrayList<Customer> customers = new ArrayList<>();
     private ArrayList<BankAccount> BankAccounts = new ArrayList<>();
 
-    public void addCustomer(String customerName, String customerEmailAddress, String customerPhoneNumber) {
-      customers.add(new Customer("100",customerName,customerEmailAddress,customerPhoneNumber));
+    public Customer addCustomer(String customerName, String customerEmailAddress, String customerPhoneNumber) {
+        Customer customer = new Customer("C-"+  String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000)),customerName,customerEmailAddress,customerPhoneNumber);
+        customers.add(customer);
+        System.out.println("\n✅ Customer " + customerName + " added successfully.");
+        return customer;
     }
 
-    public void removeCustomer(String customerName) {
-        customers.removeIf(customer -> customer.getCustomerName().equals(customerName));
-    }
-
-    public void displayCustomers() {
-        for (Customer customer : customers) {
-            System.out.println(customer);
-        }
-    }
 
     public String findCustomer(String customerName) {
-        for (Customer customer : customers) {
-            if (customer.getCustomerName().contains(customerName)) {
-                customerName= customer.getCustomerName();
+        String validatedCustomerName ="";
+        if(!customers.isEmpty()) {
+            for (Customer customer : customers) {
+                if (customer.getCustomerName().toLowerCase().contains(customerName.toLowerCase())) {
+                    validatedCustomerName = customer.getCustomerName();
+                }
             }
+            if(validatedCustomerName.isEmpty()) {
+                System.out.println("⚠️ Customer " + customerName + " not found.");
+            }
+        }else{
+            System.out.println("⚠️ Customer " + customerName + " not found.");
+            validatedCustomerName = "";
         }
-        return customerName;
+        return validatedCustomerName;
     }
 
-    public void addBankAccounts(String accountHolderName, String accountType){
+    public BankAccount addBankAccounts(String accountHolderName, String accountType){
         String accountHolder = findCustomer(accountHolderName);
-        BankAccounts.add(new BankAccount("10003234",accountHolder,accountType,0));
+        if(!Objects.equals(accountHolder, "")) {
+            BankAccount Account =new BankAccount("1034"+  String.valueOf(ThreadLocalRandom.current().nextInt(1000, 10000)), accountHolder, accountType, 0.00);
+            BankAccounts.add(Account);
+            System.out.println("\n✅ BankAccount (" + Account.getAccountNumber()+"-"+Account.getAccountType() + " account) added successfully.");
+            return Account;
+        }else {
+            return null;
+        }
+
     }
 
     public void removeBankAccounts(String accountNumber){
@@ -40,12 +54,11 @@ public class Bank {
     }
 
     public void displayCustomerInfo (String customerName){
-        addCustomer("Sakith","sakith@gmail.com","0712820396");
         for (Customer customer : customers) {
-            if (customer.getCustomerName().contains(customerName)) {
+            if (customer.getCustomerName().toLowerCase().contains(customerName.toLowerCase())) {
                 System.out.printf(
                         """
-                                🙎‍♂️ Customer Information
+                                ‍♂️ Customer Information
                                 
                                 Customer Id    : %s
                                 Customer Name  : %s
@@ -56,10 +69,32 @@ public class Bank {
                                     customer.getCustomerEmailAddress(),
                                     customer.getCustomerPhoneNumber());
             }else{
-                System.out.println("No Customer Found");
+                System.out.println("❌ No Customer Found");
             }
         }
     }
 
+
+    public BankAccount bankAccountDetails(String accountNumber) {
+        BankAccount account = null ;
+        if(!BankAccounts.isEmpty()) {
+            for (BankAccount bankAccount : BankAccounts) {
+                if (bankAccount.getAccountNumber().equals(accountNumber)) {
+                    account = bankAccount;
+                     System.out.printf("""
+                                     Account Number  : %s
+                                     Account Type    : %s
+                                     Account Holder  : %s
+                                     Account Balance : %s
+                                    """,bankAccount.getAccountNumber(),
+                            bankAccount.getAccountType(),
+                    bankAccount.getAccountHolderName(),
+                    bankAccount.getAccountBalance());
+                }
+            }
+
+        }
+            return account;
+    }
 
 }
