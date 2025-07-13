@@ -1,7 +1,6 @@
-package Task2;
+package main;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -11,8 +10,8 @@ public class BankAccount {
     private String accountType;
     private Double accountBalance;
 
-    public BankAccount(String accountNumber, String accountHolderName, String accountType, Double accountBalance) {
-        this.accountNumber = accountNumber;
+    public BankAccount(String accountHolderName, String accountType, Double accountBalance) {
+        this.accountNumber = "1034"+  String.valueOf(ThreadLocalRandom.current().nextInt(1000, 10000));
         this.accountHolderName = accountHolderName;
         this.accountType = accountType;
         this.accountBalance = accountBalance;

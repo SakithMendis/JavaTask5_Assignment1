@@ -1,4 +1,6 @@
-package Task2;
+package main;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Customer {
     private String customerId;
@@ -6,8 +8,8 @@ public class Customer {
     private String customerEmailAddress;
     private String customerPhoneNumber;
 
-    public Customer(String customerId, String customerName, String customerEmailAddress, String customerPhoneNumber) {
-        this.customerId = customerId;
+    public Customer(String customerName, String customerEmailAddress, String customerPhoneNumber) {
+        this.customerId = "C-"+  String.valueOf(ThreadLocalRandom.current().nextInt(100, 1000));
         this.customerName = customerName;
         this.customerEmailAddress = customerEmailAddress;
         this.customerPhoneNumber = customerPhoneNumber;

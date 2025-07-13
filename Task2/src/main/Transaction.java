@@ -1,7 +1,6 @@
-package Task2;
+package main;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Transaction {
     private String transactionId;
