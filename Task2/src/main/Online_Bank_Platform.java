@@ -1,5 +1,4 @@
-package Task2;
-
+package main;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -21,9 +20,10 @@ public class Online_Bank_Platform {
                 ---------------------------------------------------------------
                 1.New Customer
                 2.View Customer Details
-                3.Create New Bank Account for Customer
+                3.Create New main.Bank Account for main.Customer
                 4.View Bank Account Details
-                5.exit
+                5.Customer withdraw and deposit
+                6.Exit
                 ---------------------------------------------------------------
                 """;
     }
@@ -33,21 +33,21 @@ public class Online_Bank_Platform {
             System.out.print(applicationMenu());
             System.out.print("Add menu number :");
             int option = scanner.nextInt();
+            scanner.nextLine();
             switch (option) {
                 case 1:
                     System.out.print("""
                             ---------------------------------------------------------------
-                                                🧔 Create New Customer 
+                                                🧔 Create New main.Customer 
                             ---------------------------------------------------------------
                             """);
-
-                    System.out.print("Enter Customer Name : ");
-                    String name = scanner.next();
                     String email;
                     String phoneNumber;
+                    System.out.print("Enter Customer Name : ");
+                    String name = scanner.nextLine().trim();
                     while (true){
                         System.out.print("Enter Customer Email Address('@'is mandatory) : ");
-                        email = scanner.next();
+                        email = scanner.nextLine().trim();
                         if(email.contains("@")) break;
                         System.out.print("❌ Email Address not contain '@' \n");
                     }
@@ -70,31 +70,33 @@ public class Online_Bank_Platform {
                             ---------------------------------------------------------------
                             """);
                     System.out.print("Enter Customer Name :");
-                    String customerNameSearch = scanner.next();
+                    String customerNameSearch = scanner.next().trim();
                     bank.displayCustomerInfo(customerNameSearch);
                     break;
                 case 3:
                     System.out.print("""
                             ---------------------------------------------------------------
-                                        🧔 Create New Bank Account for Customer 
+                                        🧔 Create New Bank Account for a Customer 
                             ---------------------------------------------------------------
                             """);
                     System.out.print("Enter Customer Name :");
-                    String customerName = scanner.next();
-                    customerName = bank.findCustomer(customerName);
-                    if (!customerName.isEmpty()) {
+                    String customerName = scanner.next().trim();
+                    Customer customer = bank.findCustomer(customerName);
+                    if (!(customer ==null)) {
                         String accountType;
                         while (true) {
-                            System.out.print("Enter Account Type (Saving/Current): ");
+                            System.out.print("Enter Account Type (Saving(S)/Current (C)): ");
                             accountType = scanner.next();
-                            if (accountType.equalsIgnoreCase("saving") || accountType.equalsIgnoreCase("current"))
+                            accountType = accountType.toUpperCase();
+                            if (accountType.equalsIgnoreCase("S") || accountType.equalsIgnoreCase("C")||accountType.equalsIgnoreCase("SAVING") || accountType.equalsIgnoreCase("CURRENT"))
                                 break;
                             System.out.println("❌ Invalid account type. Please enter 'Saving' or 'Current'.");
                         }
-                        System.out.print("Enter Account Initial deposit : ");
-                        int accountInitialDeposit = scanner.nextInt();
-                        BankAccount Account = bank.addBankAccounts(customerName, accountType);
-                        Account.deposit(accountInitialDeposit);
+                            System.out.print("Enter Account Initial deposit : ");
+                            int accountInitialDeposit = scanner.nextInt();
+                        accountType = (accountType.equals("S")||accountType.equals("SAVING")) ? "Saving" : (accountType.equals("C")||accountType.equals("CURRENT")) ? "Current" : "";
+                        bank.addBankAccounts(customer.getCustomerName(), accountType,accountInitialDeposit);
+
                     }
                     break;
                 case 4:
@@ -106,20 +108,63 @@ public class Online_Bank_Platform {
                     System.out.print("Enter Bank Account Number : ");
                     String accountNumber = scanner.next();
                     BankAccount account = bank.bankAccountDetails(accountNumber);
-                    while (true) {
-                        System.out.print("\nDo you want to view transaction history (y/n) : ");
-                        String input = scanner.next();
-                        if (input.equalsIgnoreCase("y")) {
-                            account.transactionHistory();
-                            break;
-                        } else if (input.equalsIgnoreCase("n")) {
-                            break;
-                        } else {
-                            System.out.println("❌ Invalid Option");
+                    if(!(account==null)){
+                        while (true) {
+                            System.out.print("\nDo you want to view transaction history (y/n) : ");
+                            String input = scanner.next();
+                            if (input.equalsIgnoreCase("y")) {
+                                account.transactionHistory();
+                                break;
+                            } else if (input.equalsIgnoreCase("n")) {
+                                break;
+                            } else {
+                                System.out.println("❌ Invalid Option");
+                            }
                         }
                     }
 
+                    break;
                 case 5:
+
+                    System.out.print("Enter Customer Account Number  :");
+                    String customerAccountNumber = scanner.next();
+                    BankAccount bankAccount = bank.findBankAccount(customerAccountNumber);
+                    if(bankAccount!=null) {
+                        System.out.print("""
+                                ---------------------------------------------------------------
+                                                    Deposit and Withdraw
+                                ---------------------------------------------------------------
+                                D. Deposits
+                                W. Withdraws
+                                ---------------------------------------------------------------
+                                """);
+
+                        while (true) {
+                            System.out.print("Enter Transaction type (D/W) :");
+                            String transactionType = scanner.next();
+                            System.out.print("Enter Amount : ");
+                            int amount = scanner.nextInt();
+                            switch (transactionType.toUpperCase()) {
+                                case "D":
+                                    bankAccount.deposit(amount);
+                                    break;
+                                case "W":
+                                    bankAccount.withdraw(amount);
+                                    break;
+                            }
+                            System.out.print("Does Customer want to do another transactions  (y/n) :");
+                            String input = scanner.next();
+                            if (!input.equals("y")) {
+                                break;
+                            }
+
+                        }
+                    }else{
+                        System.out.print("⚠️ You entered Account Number is Invalid");
+                    }
+                    break;
+
+                case 6:
                     applicationEnd = true;
                     break;
                 default:
