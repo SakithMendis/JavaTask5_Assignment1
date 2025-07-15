@@ -33,6 +33,7 @@ public class Online_Bank_Platform {
             System.out.print(applicationMenu());
             System.out.print("Add menu number :");
             int option = scanner.nextInt();
+            scanner.nextLine();
             switch (option) {
                 case 1:
                     System.out.print("""
@@ -40,14 +41,13 @@ public class Online_Bank_Platform {
                                                 🧔 Create New main.Customer 
                             ---------------------------------------------------------------
                             """);
-
-                    System.out.print("Enter Customer Name : ");
-                    String name = scanner.next();
                     String email;
                     String phoneNumber;
+                    System.out.print("Enter Customer Name : ");
+                    String name = scanner.nextLine().trim();
                     while (true){
                         System.out.print("Enter Customer Email Address('@'is mandatory) : ");
-                        email = scanner.next();
+                        email = scanner.nextLine().trim();
                         if(email.contains("@")) break;
                         System.out.print("❌ Email Address not contain '@' \n");
                     }
@@ -70,7 +70,7 @@ public class Online_Bank_Platform {
                             ---------------------------------------------------------------
                             """);
                     System.out.print("Enter Customer Name :");
-                    String customerNameSearch = scanner.next();
+                    String customerNameSearch = scanner.next().trim();
                     bank.displayCustomerInfo(customerNameSearch);
                     break;
                 case 3:
@@ -80,7 +80,7 @@ public class Online_Bank_Platform {
                             ---------------------------------------------------------------
                             """);
                     System.out.print("Enter Customer Name :");
-                    String customerName = scanner.next();
+                    String customerName = scanner.next().trim();
                     Customer customer = bank.findCustomer(customerName);
                     if (!(customer ==null)) {
                         String accountType;
